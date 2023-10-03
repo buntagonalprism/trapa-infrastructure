@@ -18,6 +18,7 @@ runs:
 
   - name: 'Get Cloud SDK CLI Info'
     run: 'gcloud info'
+    shell: bash
 
   - name: 'Install Terraform'
     uses: hashicorp/setup-terraform@v2
@@ -26,3 +27,4 @@ runs:
 
   - name: 'Terraform Init'
     run: terraform init
+    shell: bash
