@@ -1,0 +1,19 @@
+name: Infrastructure Deployment
+run-name: ${{ github.actor }} is deploying infrastructure
+on: [push]
+
+jobs:
+  Deploy-Infrastructure:
+    environment: Dev
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./terraform/environments/dev
+    steps:
+    - uses: ./.github/actions/setup_terraform.yaml
+      with: 
+        serviceAccountKey: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
+          
+    - name: 'Terraform Plan'
+      run: terraform plan
+      
