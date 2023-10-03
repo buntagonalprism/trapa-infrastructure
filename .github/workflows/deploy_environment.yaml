@@ -37,3 +37,28 @@ jobs:
         name: tfplan
         path: ${{ inputs.terraformModuleFolder }}/tfplan
       
+  Terraform-Apply:
+    name: 'Terraform Apply - ${{ inputs.githubEnvironmentName }}'
+    needs: Terraform-Plan
+    runs-on: ubuntu-latest
+    environment: ${{ inputs.githubEnvironmentName }}
+    defaults:
+      run:
+        working-directory: ${{ inputs.terraformModuleFolder }}
+    steps:
+    - uses: 'actions/checkout@v3'
+
+    - uses: ./.github/actions/setup_terraform
+      with: 
+        serviceAccountKey: ${{ secrets.serviceAccountKey }}
+
+    - name: 'Terraform Init'
+      run: terraform init
+
+    - name: 'Download Terraform Plan'
+      uses: actions/download-artifact@v3
+      with:
+        name: tfplan
+
+    - name: 'Terraform Apply'
+      run: terraform apply -auto-approve tfplan
