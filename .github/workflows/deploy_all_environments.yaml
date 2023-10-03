@@ -7,6 +7,6 @@ jobs:
     uses: ./.github/workflows/deploy_environment.yaml
     with:
       terraformModuleFolder: './terraform/environments/dev'
-      githubEnvironment: 'Dev'
+      githubEnvironmentName: 'Dev'
     secrets:
       serviceAccountKey: ${{ secrets.DEV_GOOGLE_SERVICE_ACCOUNT_KEY }}
