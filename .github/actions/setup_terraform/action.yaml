@@ -1,5 +1,5 @@
 inputs: 
-  terraformModuleFolder:
+  serviceAccountKey:
     required: true 
     type: string
 
