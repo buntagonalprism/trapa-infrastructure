@@ -3,7 +3,7 @@ run-name: ${{ github.actor }} is deploying infrastructure
 on: [push]
 
 jobs:
-  Deploy-Dev:
+  Dev:
     uses: ./.github/workflows/deploy_environment.yaml
     with:
       terraformModuleFolder: './terraform/environments/dev'

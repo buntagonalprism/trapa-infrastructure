@@ -14,7 +14,7 @@ on:
 
 jobs:
   Terraform-Plan:
-    name: 'Terraform Plan - ${{ inputs.githubEnvironmentName }}'
+    name: 'Terraform Plan'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -38,7 +38,7 @@ jobs:
         path: ${{ inputs.terraformModuleFolder }}/tfplan
       
   Terraform-Apply:
-    name: 'Terraform Apply - ${{ inputs.githubEnvironmentName }}'
+    name: 'Terraform Apply'
     needs: Terraform-Plan
     runs-on: ubuntu-latest
     environment: ${{ inputs.githubEnvironmentName }}

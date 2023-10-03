@@ -22,4 +22,9 @@ resource "google_apikeys_key" "places_api_key" {
       service = "places-backend.googleapis.com"
     }
   }
+
+  depends_on = [ 
+    google_project_service.places_service,
+    google_project_service.apikeys_service,
+  ]
 }
