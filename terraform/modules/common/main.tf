@@ -43,7 +43,7 @@ resource "google_secret_manager_secret" "places_api_key_secret" {
 }
 
 resource "google_secret_manager_secret_version" "places_api_key_secret_version" {
-  secret = google_secret_manager_secret.places_api_key_secret.secret_id
+  secret = google_secret_manager_secret.places_api_key_secret.id
 
   secret_data = google_apikeys_key.places_api_key.key_string
 }
