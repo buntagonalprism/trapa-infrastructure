@@ -15,7 +15,6 @@ on:
 jobs:
   Terraform-Plan:
     name: 'Terraform Plan - ${{ inputs.githubEnvironmentName }}'
-    environment: ${{ inputs.githubEnvironmentName }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -31,5 +30,10 @@ jobs:
       run: terraform init
 
     - name: 'Terraform Plan'
-      run: terraform plan
+      run: terraform plan -out=tfplan
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: tfplan
+        path: ${{ inputs.terraformModuleFolder }}/tfplan
       
