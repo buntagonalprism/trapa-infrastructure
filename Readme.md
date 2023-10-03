@@ -12,4 +12,4 @@ Terraform is used to deploy Google Cloud Resources to Google Cloud Platform proj
     - Bucket name convention: `terraform.<project>.<organisation-domain>`.
     - When a public domain name is used in the bucket name like this, then only the verified owner of the domain name is allowed to create the bucket. This means the account needs to be manually by a user created rather than created through a service account. 
     - Enable object versioning on the bucket as recommended by Terraform documentation: https://developer.hashicorp.com/terraform/language/settings/backends/gcs
-3. Add bucket name and project name into `terraform/environments/<ENV>/main.tf` 
+3. Set bucket name and project name in `terraform/environments/<ENV>/main.tf` 
