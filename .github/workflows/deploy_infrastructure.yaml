@@ -15,7 +15,10 @@ jobs:
     - uses: ./.github/actions/setup_terraform
       with: 
         serviceAccountKey: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_KEY }}
-          
+
+    - name: 'Terraform Init'
+      run: terraform init
+
     - name: 'Terraform Plan'
       run: terraform plan
       
