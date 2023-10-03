@@ -10,3 +10,12 @@ jobs:
       githubEnvironmentName: 'Dev'
     secrets:
       serviceAccountKey: ${{ secrets.DEV_GOOGLE_SERVICE_ACCOUNT_KEY }}
+
+  Prod:
+    uses: ./.github/workflows/deploy_environment.yaml
+    needs: Dev
+    with:
+      terraformModuleFolder: './terraform/environments/prod'
+      githubEnvironmentName: 'Prod'
+    secrets:
+      serviceAccountKey: ${{ secrets.PROD_GOOGLE_SERVICE_ACCOUNT_KEY }}
