@@ -6,9 +6,7 @@ inputs:
 runs:
   using: 'composite'
 
-  steps:
-  - uses: 'actions/checkout@v3'
-      
+  steps:      
   - id: 'auth'
     name: 'Authenticate to Google Cloud'
     uses: 'google-github-actions/auth@v1'
