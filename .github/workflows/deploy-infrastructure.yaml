@@ -27,9 +27,6 @@ jobs:
     - name: 'Get Cloud SDK CLI Info'
       run: 'gcloud info'
 
-    - name: 'Create Terraform Storage Bucket'
-      run: ./scripts/create_terraform_storage_bucket.sh
-
     - name: 'Install Terraform'
       uses: hashicorp/setup-terraform@v2
       with:
