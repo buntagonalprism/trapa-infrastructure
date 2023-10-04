@@ -93,7 +93,7 @@ resource "google_cloud_run_v2_service" "trapa_api" {
       image = "us-docker.pkg.dev/cloudrun/container/placeholder"
 
       env {
-        name  = "PROJECT_NAME"
+        name  = "GOOGLE_CLOUD_PROJECT_NAME"
         value = var.projectName
       }
     }
