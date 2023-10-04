@@ -75,11 +75,11 @@ resource "google_service_account" "trapa_api_service_account" {
   }
 }
 
-resource "google_secret_manager_secret_iam_member" "secret-access" {
-  secret_id = google_secret_manager_secret.places_api_key_secret.id
-  role      = "roles/secretmanager.secretAccessor"
-  member    = "serviceAccount:${google_service_account.trapa_api_service_account.email}"
-  depends_on = [ google_project_service.iam_service ]
+resource "google_secret_manager_secret_iam_member" "trapa_api_places_secret_access" {
+  secret_id  = google_secret_manager_secret.places_api_key_secret.id
+  role       = "roles/secretmanager.secretAccessor"
+  member     = "serviceAccount:${google_service_account.trapa_api_service_account.email}"
+  depends_on = [google_project_service.iam_service]
 }
 
 resource "google_cloud_run_v2_service" "trapa_api" {
@@ -90,17 +90,35 @@ resource "google_cloud_run_v2_service" "trapa_api" {
     service_account = google_service_account.trapa_api_service_account.email
     containers {
       # Deploy a placeholder image to ensure the service is created
-      image = "us-docker.pkg.dev/cloudrun/container/hello"
+      image = "us-docker.pkg.dev/cloudrun/container/placeholder"
     }
   }
 
-  depends_on = [ google_project_service.cloud_run_service ]
+  depends_on = [google_project_service.cloud_run_service]
 
   # Ignore changes to the image so that we can update the service as part
   # of the API build and deploy pipeline
-  # lifecycle {
-  #   ignore_changes = [ 
-  #     template[0].containers[0].image,
-  #   ]
-  # }
+  lifecycle {
+    ignore_changes = [
+      template[0].containers[0].image,
+    ]
+  }
+}
+
+# Make the Trapa API service publicly accessible. Authentication will be handled
+# within the API itself rather than through the Cloud Run environment.
+data "google_iam_policy" "trapa_api_noauth" {
+  binding {
+    role = "roles/run.invoker"
+    members = [
+      "allUsers",
+    ]
+  }
+}
+
+resource "google_cloud_run_v2_service_iam_policy" "trapi_api_noauth" {
+  location    = google_cloud_run_v2_service.trapa_api.location
+  project     = google_cloud_run_v2_service.trapa_api.project
+  name        = google_cloud_run_v2_service.trapa_api.name
+  policy_data = data.google_iam_policy.trapa_api_noauth.policy_data
 }
