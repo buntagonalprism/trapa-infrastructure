@@ -91,6 +91,11 @@ resource "google_cloud_run_v2_service" "trapa_api" {
     containers {
       # Deploy a placeholder image to ensure the service is created
       image = "us-docker.pkg.dev/cloudrun/container/placeholder"
+
+      env {
+        name  = "PROJECT_NAME"
+        value = var.projectName
+      }
     }
   }
 
