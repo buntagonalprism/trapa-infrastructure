@@ -1,3 +1,6 @@
+data "google_project" "project" {
+}
+
 resource "google_project_service" "places_service" {
   project = var.projectName
   service = "places-backend.googleapis.com"
@@ -95,6 +98,10 @@ resource "google_cloud_run_v2_service" "trapa_api" {
       env {
         name  = "GOOGLE_CLOUD_PROJECT_NAME"
         value = var.projectName
+      }
+      env {
+        name  = "GOOGLE_CLOUD_PROJECT_ID"
+        value = data.google_project.project.number
       }
     }
   }
