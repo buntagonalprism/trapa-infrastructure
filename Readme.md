@@ -28,5 +28,10 @@ Terraform is used to deploy Google Cloud Resources to Google Cloud Platform proj
 6. Update pipeline to deploy environment
     1. Modify `.github/workflows/deploy_all_environments.yaml` to include a step to deploy the environment using the service account key created in step 3. 
 
+### Deployment Failures
+A lot of operations in google cloud are "eventually consistent". This includes enabling API services, and creating service accounts. As a result of this eventual consistency, terraform may receive a success result to these operations and then start trying to create dependent resources. If the change is not fully propagated then errors will occur when creating the dependent resources. 
+
+These errors can be resolved by re-running the terraform deployment after giving a few minutes for the change to propagate. The job may need to be re-run multiple times when first deploying an environment, since each resource that fails to deploy can halt the overall deployment job. 
+
 ## To Do
 - Migrate to Workflow Identity Federation for authenticating Github Actions instead of using a service account key
