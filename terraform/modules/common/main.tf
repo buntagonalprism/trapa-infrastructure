@@ -23,6 +23,12 @@ resource "google_project_service" "iam_service" {
   service = "iam.googleapis.com"
 }
 
+resource "google_project_service" "cloud_run_service" {
+  project = var.projectName
+  service = "run.googleapis.com"
+}
+
+
 resource "google_apikeys_key" "places_api_key" {
   name         = "trapa-places-api-key"
   display_name = "Trapa API Places Service API Key"
@@ -83,7 +89,18 @@ resource "google_cloud_run_v2_service" "trapa_api" {
   template {
     service_account = google_service_account.trapa_api_service_account.email
     containers {
+      # Deploy a placeholder image to ensure the service is created
       image = "us-docker.pkg.dev/cloudrun/container/hello"
     }
   }
+
+  depends_on = [ google_project_service.cloud_run_service ]
+
+  # Ignore changes to the image so that we can update the service as part
+  # of the API build and deploy pipeline
+  # lifecycle {
+  #   ignore_changes = [ 
+  #     template[0].containers[0].image,
+  #   ]
+  # }
 }
