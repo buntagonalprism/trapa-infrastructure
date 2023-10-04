@@ -18,6 +18,11 @@ resource "google_project_service" "registry_service" {
   service = "artifactregistry.googleapis.com"
 }
 
+resource "google_project_service" "iam_service" {
+  project = var.projectName
+  service = "iam.googleapis.com"
+}
+
 resource "google_apikeys_key" "places_api_key" {
   name         = "trapa-places-api-key"
   display_name = "Trapa API Places Service API Key"
@@ -68,6 +73,7 @@ resource "google_secret_manager_secret_iam_member" "secret-access" {
   secret_id = google_secret_manager_secret.places_api_key_secret.id
   role      = "roles/secretmanager.secretAccessor"
   member    = "serviceAccount:${google_service_account.trapa_api_service_account.email}"
+  depends_on = [ google_project_service.iam_service ]
 }
 
 resource "google_cloud_run_v2_service" "trapa_api" {
