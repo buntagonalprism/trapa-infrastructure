@@ -13,7 +13,9 @@ Terraform is used to deploy Google Cloud Resources to Google Cloud Platform proj
     1. Create github environment through settings: https://github.com/buntagonalprism/trapa-infrastructure/settings/environments
     2. Add a protection rule to the environment to require a review. This will allow manual validation of the terraform plan before applying the configuration change
 3. Configure service account for github actions to authenticate to Google Cloud Platform
-    1. Create a service account for the with "owner" permissions so that terraform can perform all management actions https://console.cloud.google.com/iam-admin/serviceaccounts
+    1. Create a service account for the with the following permissions so that terraform can perform all management actions https://console.cloud.google.com/iam-admin/serviceaccounts
+        - Owner: This permission is required to deploy and manage resources with Terraform
+        - Service Account Token Creator: This permission is required to get access tokens which can be used to authenticate with Google Artifact registry in application deployment pipelines. Ideally the application deployment pipelines would have their own service account with only this permission, or even better we'd use Workflow Identity Management instead. 
     2. Create a "JSON" key type for the service account by selecting the "Manage Keys" under the actions of the new service account
     3. Remove all newlines from the secret JSON file - see here for reason https://github.com/google-github-actions/auth/blob/main/docs/TROUBLESHOOTING.md#aggressive-replacement
     4. Create a Github actions secret `<ENV>_GOOGLE_SERVICE_ACCOUNT_KEY` at the repository level (i.e. not within an environment): https://github.com/buntagonalprism/trapa-infrastructure/settings/secrets/actions

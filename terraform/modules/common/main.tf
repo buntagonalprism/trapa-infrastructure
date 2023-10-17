@@ -134,3 +134,11 @@ resource "google_cloud_run_v2_service_iam_policy" "trapi_api_noauth" {
   name        = google_cloud_run_v2_service.trapa_api.name
   policy_data = data.google_iam_policy.trapa_api_noauth.policy_data
 }
+
+
+resource "google_artifact_registry_repository" "trapa_api_repo" {
+  location      = var.location
+  repository_id = "trapa-api"
+  description   = "Trapa API Repository"
+  format        = "DOCKER"
+}
