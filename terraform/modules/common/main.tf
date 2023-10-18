@@ -78,11 +78,19 @@ resource "google_service_account" "trapa_api_service_account" {
   }
 }
 
+# Trapa API service account access to Secret Manager
 resource "google_secret_manager_secret_iam_member" "trapa_api_places_secret_access" {
   secret_id  = google_secret_manager_secret.places_api_key_secret.id
   role       = "roles/secretmanager.secretAccessor"
   member     = "serviceAccount:${google_service_account.trapa_api_service_account.email}"
   depends_on = [google_project_service.iam_service]
+}
+
+# Trapa API service account access to manage data in firestore
+resource "google_project_iam_member" "trapa_api_firestore_access" {
+  project = var.projectName
+  role    = "roles/datastore.user"
+  member  = "serviceAccount:${google_service_account.trapa_api_service_account.email}"
 }
 
 resource "google_cloud_run_v2_service" "trapa_api" {
@@ -142,3 +150,4 @@ resource "google_artifact_registry_repository" "trapa_api_repo" {
   description   = "Trapa API Repository"
   format        = "DOCKER"
 }
+
